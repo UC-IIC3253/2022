@@ -1,0 +1,64 @@
+%!TEX root = ../main/main.tex
+
+Dado un alfabeto $\Sigma=\{\sigma_0,\ldots,\sigma_{N-1}\}$ definiremos el esquema criptográfico $\text{RP}^{\Sigma, \ell}$ (Repeated Pad sobre $\Sigma$ con llaves de largo $\ell$), como $(Gen, Enc, Dec)$ donde:
+\begin{itemize}
+  \item $Gen$ es la distribución uniforme sobre $\Sigma^\ell$.
+  \item Dado $m=\sigma_{m_0},\ldots,\sigma_{m_{n-1}}\in\Sigma^*$ y $k=\sigma_{k_0},\ldots,\sigma_{k_{\ell-1}}\in\Sigma^\ell$, el texto cifrado $c=Enc(k, m)$ se define como $c=\sigma_{c_0},\ldots,\sigma_{c_{n-1}}$ donde $c_i=(\,m_i + k_{(i \!\mod \ell)}\,)\mod N$.
+  \item Dado $c=\sigma_{c_0},\ldots,\sigma_{c_{n-1}}\in\Sigma^*$ y $k=\sigma_{k_0},\ldots,\sigma_{k_{\ell-1}}\in\Sigma^\ell$, el texto plano $m=Dec(k, c)$ se define como $m=\sigma_{m_0},\ldots,\sigma_{m_{n-1}}$ donde $m_i=(\ c_i - k_{(i\!\mod \ell)}\,)\mod N$.
+  
+\end{itemize}
+
+En clases se mostró una forma de decriptar mensajes suficientemente largos encriptados con $\text{RP}^{\Sigma,\ell}$, suponiendo que los mensajes originales estaban escritos en inglés y $\ell$ era un valor conocido. Para esto se utilizó la \href{https://en.wikipedia.org/wiki/Letter_frequency}{frecuencia de caracteres} del inglés, además de una noción que definía intuitivamente cuánto dista un string de seguir dicha frecuencia. En esta pregunta se deberá generalizar lo hecho en clases para intentar decriptar $\text{RP}^{\Sigma, \ell}$ suponiendo lo siguiente:
+
+\begin{itemize}
+  \item El largo de la llave es desconocido.
+  \item El mensaje original está en un idioma arbitrario, para el cual la frecuencia es conocida.
+  \item La noción de cuánto dista un string de seguir una frecuencia de caracteres es arbitraria.
+\end{itemize}
+
+En concreto, deberá escribir una función que reciba (1) un texto cifrado, (2) una frecuencia de caracteres, y (3) una función que indica cuánto dista un string de seguir una frecuencia de caracteres, y retorne la llave que se utilizó para encriptar el texto cifrado.
+
+La entrega de esta pregunta deberá seguir las instrucciones indicadas más arriba, entregando un Jupyter Notebook que defina una función como la siguiente:
+
+\bigskip
+\begin{python}
+  def break_rp(
+      ciphertext: str,
+      frequencies: {str: float},
+      distance: (str, {str: float}) -> float,
+    ) -> str:
+    """
+    Arguments:
+      ciphertext: An abritrary string representing the
+                  encrypted version of a plaintext.
+      frequencies: A dictionary representing a character
+                   frequency over the alphabet.
+      distance: A function indicating how distant is a string
+                from following a character frequency
+    Returns:
+      key: A guess of the key used to encrypt the ciphertext, assuming
+           that the plaintext message was written in a language in which
+           letters distribute according to frequencies.
+    """
+\end{python}
+
+Para probar su respuesta se recomienda utilizar la distancia que definimos en clases, dada por la siguiente función:
+
+\bigskip
+\begin{python}
+  def abs_distance(string: str, frequencies: {str: float}) -> float:
+    """
+    Arguments:
+      string: An abritrary string
+      frequencies: A dictionary representing a character frequency
+    Returns:
+      distance: How distant is the string from the character frequency
+    """
+    return sum([
+      abs(frequencies[c] - string.count(c) / len(string))
+      for c in frequencies
+    ])
+\end{python}
+Puede suponer que el alfabeto es el conjunto de llaves del diccionario \texttt{frequencies}, y que el largo de la llave es a lo más el largo de \texttt{ciphertext} dividido en 50.
+
+\textbf{Restricción.} Si se utiliza la función \texttt{abs\_distance} definida arriba, un texto cifrado con 1000 caracteres y un alfabeto de 30 caracteres, su función no puede demorar más de 10 segundos en su propio computador.
