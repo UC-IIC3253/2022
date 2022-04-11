@@ -96,7 +96,12 @@ Además de esta clase, usted deberá programar una función que reciba una \emph
 
 \bigskip
 \begin{python}
-  def verify(root: string, item: str, proof: [(str, "d"|"i")], hash_func: (str) -> str) -> bool:
+  def verify(
+    root: string,
+    item: str,
+    proof: [(str, "d"|"i")],
+    hash_func: (str) -> str
+  ) -> bool:
     """
     Arguments:
       root: The root of a merkle tree
