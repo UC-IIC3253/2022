@@ -71,13 +71,13 @@ En esta pregunta usted deberá programar una clase que permita crear árboles de
 \begin{python}
   class MerkleTree:
     
-    def __init__(self, strings: [str], hash_func: (str) -> str) -> MerkleTree:
+    def __init__(self, strings: [str], hash_func: (str) -> str) -> None:
     """
     Arguments:
       strings: The set of strings S
     """
 
-    def get_root(self) -> string:
+    def get_root(self) -> str:
     """
     Returns:
       root: Root of the Merkle Tree
@@ -97,7 +97,7 @@ Además de esta clase, usted deberá programar una función que reciba una \emph
 \bigskip
 \begin{python}
   def verify(
-    root: string,
+    root: str,
     item: str,
     proof: [(str, "d"|"i")],
     hash_func: (str) -> str
