@@ -1,0 +1,64 @@
+%!TEX root = ../main/main.tex
+
+En esta pregunta deberá implementar la construcción de Merkle-Damgård
+de funciones de hash para mensajes de largo arbitrario, utilizando la
+construcción de Davies-Meyer para funciones de
+compresión. Concretamente, deberá escribir un Jupyter notebook de
+acuerdo a las instrucciones explicadas arriba que contenga las
+siguientes funciones:
+\begin{python}
+def davies_meyer(encrypt: (bytearray, bytearray) -> bytearray,
+                 l_key: int, l_message: int) -> (bytearray) -> bytearray:
+    """
+    Arguments:
+      encrypt: an encryption function
+      l_key: length in bytes of the keys for encrypt
+      l_message: length in bytes of the messages for encrypt
+    Returns:
+      A compression function from messages of length l_key + l_message to
+      messages of length l_message, defined by using the Davies-Meyer
+      construction   
+    """
+\end{python}
+
+\begin{python}
+def pad(message: bytearray, l_block: int) -> bytearray:
+    """
+    Arguments:
+      message: message to be padded
+      l_block: length in bytes of the block
+    Returns:
+      extension of message that includes the length of message
+      (in bytes) in its last block
+    """
+\end{python}
+
+\begin{python}
+def merkle_damgard(IV: bytearray, comp: (bytearray) -> bytearray,
+                   l_block: int) -> (bytearray) -> bytearray:
+    """
+    Arguments:
+      IV: initialization vector for a hash function
+      comp: compression function to be used in the Merkle-Damgard
+      construction
+      l_block: length in bytes of the blocks to be used in the Merkle-Damgard
+      construction
+    Returns:
+      A hash function for messages of arbitrary length, defined by using
+      the Merkle-Damgard construction
+    """
+\end{python}    
+Como un ejemplo de cómo pueden ser utilizadas estas funciones
+considere el siguiente código, donde \verb+AES_128+ es una función que
+implementa el algoritmo de cifrado AES con llaves y mensajes de 16
+bytes (128 bits).
+\begin{python}
+if __name__ == "__main__":
+    compresion = davies_meyer(AES_128, 16, 16)
+    hash = merkle_damgard(b'0123456789012345', compresion, 16)
+    h1 = hash(b'Este es un mensaje de prueba para la tarea 2')
+    h2 = hash(b'Este es un segundo mensaje de prueba para la tarea 2')
+    print(h1)
+    print(h2)
+\end{python}    
+
