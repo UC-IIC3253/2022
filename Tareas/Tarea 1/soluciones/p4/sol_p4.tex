@@ -1,0 +1,111 @@
+\documentclass[11pt]{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{fullpage}
+\usepackage{epsfig}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{dirtree}
+\usepackage{fontawesome}
+\usepackage{tikz}
+
+
+\usetikzlibrary{trees}
+
+
+\newcommand{\comm}[1]{{\bf {\color{red} #1}}}
+\newcommand{\Enc}{\textit{Enc}}
+\newcommand{\Dec}{\textit{Dec}}
+
+
+\begin{document}
+
+\begin{center}
+  \bf Criptografía y Seguridad Computacional - IIC3253\\
+  \bf Tarea 1\\
+  \bf Solución pregunta 4
+\end{center}
+
+
+\bigskip
+
+\noindent
+Considere el juego $\textit{Hash-Col}(n)$ mostrado en clases para definir la noción resistencia a colisiones. Utilizando este tipo de juegos, defina la noción de resistencia a preimagen para una función de hash $(\textit{Gen}, h)$. Además, demuestre que si $(\textit{Gen}, h)$ es resistente a colisiones, entonces $(\textit{Gen}, h)$ es resistente a preimagen.
+
+\bigskip
+
+\noindent
+    {\bf Solución.}
+Considere una función de hash $(\textit{Gen},h)$ tal que si $\textit{Gen}(1^n) = s$, entonces $h^s
+: \{0,1\}^* \to \{0,1\}^{\ell(n)}$ donde $\ell(n)$ es un polinomio
+fijo. Además, suponga que $h$ se puede calcular en tiempo polinomial en el largo de la entrada, vale decir, $h(m)$ se puede calcular en tiempo $O(|m|^c)$ para alguna constante fija $c$. Definimos un juego $\textit{Hash-Pre-Img}(n)$ dado por los siguientes pasos:
+\begin{enumerate}
+\item El verificador genera $s = \textit{Gen}(1^n)$ y un hash $x \in \{0,1\}^{\ell(n)}$
+\item El adversario elige $m \in \{0,1\}^*$ o $m = \bot$
+\item El adversario gana el juego si alguna de las siguientes condiciones se cumple:
+\begin{itemize}
+\item $m \in \{0,1\}^{*}$ y $h^s(m) = x$ 
+\item $m = \bot$ y  no existe $m' \in \{0,1\}^*$ tal que $h^s(m') = x$
+\end{itemize}
+En caso contrario, el adversario pierde.
+\end{enumerate}
+Además, decimos que $(\textit{Gen},h)$ es resistente a preimagen si
+para todo adversario que funciona como un algoritmo aleatorizado de
+tiempo polinomial, la función $\Pr(\text{Adversario gane }
+\textit{Hash-Pre-Img}(n))$ es despreciable (nótese que esta es una
+función de $n$).
+
+Vamos a demostrar que si $(\textit{Gen},h)$ es resistente a
+colisiones, entonces $(\textit{Gen},h)$ es resistente a preimagen. De
+manera más precisa, vamos a hacer esto considerando el contrapositivo,
+vale decir, vamos a mostrar que si $(\textit{Gen},h)$ no es resistente
+a preimagen, entonces $(\textit{Gen},h)$ no es resistente a
+colisiones.
+
+Suponga que $(\textit{Gen},h)$ no es resistente a preimagen. Entonces
+existe un adversario ${\cal A}$ tal que ${\cal A}$ es un algoritmo
+aleatorizado de tiempo polinomial y $\Pr({\cal A} \text{ gane }
+\textit{Hash-Pre-Img}(n))$ no es una función despreciable. A partir
+del algoritmo ${\cal A}$, vamos a definir un algoritmo aleatorizado
+${\cal B}$ tal que ${\cal B}$ funciona en tiempo polinomial y
+$\Pr({\cal B} \text{ gane } \textit{Hash-Col}(n))$ no es una función
+despreciable. Suponga que ${\cal A}$ funciona en tiempo $p(n)$, donde
+$p(n)$ es un polinomio fijo. Dado $s = \textit{Gen}(1^n)$, el
+algoritmo ${\cal B}$ construye $m' = 0^{p(n)+1}$ (vale decir, $m'$
+tiene $p(n)+1$ símbolos $0$), se pone en el papel del verificador en
+el juego $\textit{Hash-Pre-Img}(n)$ y define $x = h^s(m')$ (nótese que
+$x \in \{0,1\}^{\ell(n)}$). Una vez que el algoritmo ${\cal A}$
+responde con un mensaje $m \in \{0,1\}^*$ en el juego
+$\textit{Hash-Pre-Img}(n)$, el algoritmo ${\cal B}$ retorna el par de
+mensajes $m$, $m'$.
+
+Dado que el mensaje $m'$ es de largo $p(n)+1$, la función de hash $h$
+se puede calcular en tiempo polinomial (en el largo de la entrada) y
+${\cal A}$ es un algoritmo aleatorizado de tiempo polinomial, se tiene
+que ${\cal B}$ es un algoritmo aleatorizado de tiempo
+polinomial. Para terminar la demostración solo necesitamos
+mostrar que $\Pr({\cal B} \text{ gane } \textit{Hash-Col}(n))$ no es
+una función despreciable. Nótese que si ${\cal A}$ gana el juego
+$\textit{Hash-Pre-Img}(n)$, entonces ${\cal A}$ genera un mensaje $m
+\in \{0,1\}^*$ tal que $h(m) = x$ (ya que $x = h(m')$ con $m' \in
+\{0,1\}^*$). Además, el algoritmo ${\cal A}$ ejecuta a lo más $p(n)$
+pasos, por lo que $|m| \leq p(n)$ y se puede concluir que $m \neq m'$
+ya que $|m'| = p(n)+1$. Así, tenemos que si ${\cal A}$ retorna un
+mensaje $m \in \{0,1\}^*$ tal que $h(m) = x$, entonces $m$, $m'$ es
+una colisión para la función de hash $(\textit{Gen},h)$ y ${\cal B}$
+gana el juego $\textit{Hash-Col}(n)$. En términos de probabilidades,
+lo que concluimos es que:
+\begin{eqnarray*}
+  \Pr({\cal B} \text{ gane } \textit{Hash-Col}(n)) &=& 
+  \Pr({\cal A} \text{ gane } \textit{Hash-Pre-Img}(n)).
+\end{eqnarray*}
+De esta forma, se deduce que $\Pr({\cal B} \text{ gane } \textit{Hash-Col}(n))$ es una función no despreciable, puesto que 
+  $\Pr({\cal A} \text{ gane } \textit{Hash-Pre-Img}(n))$ es una función no despreciable. Esto concluye
+la demostración de la propiedad.
+  
+\end{document}
