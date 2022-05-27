@@ -1,0 +1,101 @@
+
+%!TEX root = ../main/main.tex
+
+Dado un alfabeto $\Sigma=\{\sigma_0,\ldots,\sigma_{N-1}\}$ definiremos el esquema criptográfico $\text{RP}^{\Sigma, \ell}$ (Repeated Pad sobre $\Sigma$ con llaves de largo $\ell$), como $(Gen, Enc, Dec)$ donde:
+\begin{itemize}
+  \item $Gen$ es la distribución uniforme sobre $\Sigma^\ell$.
+  \item Dado $m=\sigma_{m_0},\ldots,\sigma_{m_{n-1}}\in\Sigma^*$ y $k=\sigma_{k_0},\ldots,\sigma_{k_{\ell-1}}\in\Sigma^\ell$, el texto cifrado $c=Enc(k, m)$ se define como $c=\sigma_{c_0},\ldots,\sigma_{c_{n-1}}$ donde $c_i=(\,m_i + k_{(i \!\mod \ell)}\,)\mod N$.
+  \item Dado $c=\sigma_{c_0},\ldots,\sigma_{c_{n-1}}\in\Sigma^*$ y $k=\sigma_{k_0},\ldots,\sigma_{k_{\ell-1}}\in\Sigma^\ell$, el texto plano $m=Dec(k, c)$ se define como $m=\sigma_{m_0},\ldots,\sigma_{m_{n-1}}$ donde $m_i=(\ c_i - k_{(i\!\mod \ell)}\,)\mod N$.
+  
+\end{itemize}
+
+En clases se mostró una forma de decriptar mensajes suficientemente largos encriptados con $\text{RP}^{\Sigma,\ell}$, suponiendo que los mensajes originales estaban escritos en inglés y $\ell$ era un valor conocido. Para esto se utilizó la \href{https://en.wikipedia.org/wiki/Letter_frequency}{frecuencia de caracteres} del inglés, además de una noción que definía intuitivamente cuánto dista un string de seguir dicha frecuencia. En esta pregunta se deberá generalizar lo hecho en clases para intentar decriptar $\text{RP}^{\Sigma, \ell}$ suponiendo lo siguiente:
+
+\begin{itemize}
+  \item El largo de la llave es desconocido.
+  \item El mensaje original está en un idioma arbitrario, para el cual la frecuencia es conocida.
+  \item La noción de cuánto dista un string de seguir una frecuencia de caracteres es arbitraria.
+\end{itemize}
+
+En concreto, deberá escribir una función que reciba (1) un texto cifrado, (2) una frecuencia de caracteres, y (3) una función que indica cuánto dista un string de seguir una frecuencia de caracteres, y retorne la llave que se utilizó para encriptar el texto cifrado.
+
+La entrega de esta pregunta deberá seguir las instrucciones indicadas más arriba, entregando un Jupyter Notebook que defina una función como la siguiente:
+
+\bigskip
+\begin{python}
+  def break_rp(
+      ciphertext: str,
+      frequencies: {str: float},
+      distance: (str, {str: float}) -> float,
+    ) -> str:
+    """
+    Arguments:
+      ciphertext: An abritrary string representing the
+                  encrypted version of a plaintext.
+      frequencies: A dictionary representing a character
+                   frequency over the alphabet.
+      distance: A function indicating how distant is a string
+                from following a character frequency
+    Returns:
+      key: A guess of the key used to encrypt the ciphertext, assuming
+           that the plaintext message was written in a language in which
+           letters distribute according to frequencies.
+    """
+\end{python}
+
+Para probar su respuesta se recomienda utilizar la distancia que definimos en clases, dada por la siguiente función:
+
+\bigskip
+\begin{python}
+  def abs_distance(string: str, frequencies: {str: float}) -> float:
+    """
+    Arguments:
+      string: An abritrary string
+      frequencies: A dictionary representing a character frequency
+    Returns:
+      distance: How distant is the string from the character frequency
+    """
+    return sum([
+      abs(frequencies[c] - string.count(c) / len(string))
+      for c in frequencies
+    ])
+\end{python}
+Puede suponer que el alfabeto es el conjunto de llaves del diccionario \texttt{frequencies}, y que el largo de la llave es a lo más el largo de \texttt{ciphertext} dividido en 50.
+
+\textbf{Restricción.} Si se utiliza la función \texttt{abs\_distance} definida arriba, un texto cifrado con 1000 caracteres y un alfabeto de 30 caracteres, su función no puede demorar más de 10 segundos en su propio computador.
+
+\paragraph{Corrección.} Para corregir esta pregunta se evaluará su función \texttt{break\_rp} con doce ejemplos distintos, los cuales se pueden encontrar en el repositorio del curso bajo \texttt{/Tareas/Tarea 1/Corrección/archivos/p1.json}. Cada ejemplo es un diccionario con los siguientes campos:
+\begin{itemize}
+  \item \texttt{distance}: La función de distancia que se utiliza. Puede ser \texttt{abs}, \texttt{squared} o \texttt{quadratic}. La definición de estas funciones se explica más abajo.
+  \item \texttt{frequencies}: El diccionario de frecuencias utilizado.
+  \item \texttt{key}: La llave original utilizada para encriptar.
+  \item \texttt{found\_key}: La llave encontrada por el algoritmo base, definido más abajo.
+  \item \texttt{ciphertext}: El texto cifrado.
+  \item \texttt{found\_distance}: La distancia entre el texto decriptado con \texttt{found\_key} y \texttt{frequencies} de acuerdo a la función \texttt{distance}.
+\end{itemize}
+
+La función de distancia \texttt{abs} es la función \texttt{abs\_distance} definida arriba. Las funciones \texttt{quadratic} y \texttt{squared} son equivalentes a \texttt{abs} pero con la diferencia de que cada valor absoluto en la suma es remplazado por su raíz o su valor al cuadrado, respectivamente. 
+
+El algoritmo base consiste en una generalización del algoritmo visto en clases para buscar llaves de distintos largos, que se encuentra en \texttt{/Tareas/Tarea 1/Solución/pregunta1.ipynb}
+
+La asignación de puntajes será la siguiente:
+\begin{itemize}
+  \item\text{}[1 punto] La función \texttt{break\_rp} entregada recibe parámetros y retorna objetos del tipo esperado, pero para ninguno de los ejemplos genera una llave que, al usarla para decriptar, implique una distancia de frecuencias menor o igual a \texttt{found\_distance}. 
+  \item\text{}[3 punto] La función entregada genera al menos una llave que, al usarla para decriptar, implica una distancia de frecuencias menor o igual a \texttt{found\_distance}. 
+  \item\text{}[4 punto] La función entregada genera al menos seis llaves que, al usarlas para decriptar, implican una distancia de frecuencias menor o igual a \texttt{found\_distance}. 
+  \item\text{}[5 punto] La función entregada genera al menos diez llaves que, al usarlas para decriptar, implican una distancia de frecuencias menor o igual a \texttt{found\_distance}. 
+  \item\text{}[6 punto] La función entregada genera sólamente llaves que, al usarlas para decriptar, implican una distancia de frecuencias menor o igual a \texttt{found\_distance}. 
+\end{itemize}
+
+Se generarán los siguientes descuentos:
+\begin{itemize}
+  \item\text{}[5 décimas] El programa no puede ser transformado a una librería de forma automática.
+  \item\text{}[5 décimas] La función entregada genera excepciones al ejecutarse con los parámetros correspondientes a la corrección, pero el ayudante es capaz de corregirlo en tres minutos o menos.
+  \item\text{}[1 punto] La función entregada genera excepciones al ejecutarse con los parámetros correspondientes a la corrección, pero el ayudante es capaz de corregirlo en seis minutos o menos.
+  \item\text{}[2 puntos] La función entregada genera excepciones al ejecutarse con los parámetros correspondientes a la corrección y el ayudante no es capaz de corregirlo en seis minutos o menos, pero en la recorrección el estudiante entrega una respuesta esencialmente equivalente a la que entregó antes que sí funciona.
+  
+\end{itemize}
+    Cabe mencionar que todos los parámetros que se usarán serán de los tipos esperados y presentarán consistencia en el contenido. En particular, todos los caracteres que aparecen en los textos cifrados están también en los diccionarios de frecuencia.
+
+
+\medskip

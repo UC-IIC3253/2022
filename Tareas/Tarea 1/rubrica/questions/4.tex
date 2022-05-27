@@ -1,0 +1,42 @@
+
+
+%!TEX root = ../main/main.tex
+
+Considere el juego $\textit{Hash-Col}(n)$ mostrado en clases para definir la noción resistencia a colisiones. Utilizando este tipo de juegos, defina la noción de resistencia a preimagen para una función de hash $(\textit{Gen}, h)$. Además, demuestre que si $(\textit{Gen}, h)$ es resistente a colisiones, entonces $(\textit{Gen}, h)$ es resistente a preimagen.
+
+\medskip
+
+\paragraph{Corrección.}
+Esta pregunta se corrige considerando la definición de función de hash
+$(\textit{Gen},h)$ dada en clases; en particular, sabemos que si
+$\textit{Gen}(1^n) = s$, entonces $h^s
+: \{0,1\}^* \to \{0,1\}^{\ell(n)}$ donde $\ell(n)$ es un polinomio
+fijo. Definimos entonces un  juego $\textit{Hash-Pre-Img}(n)$ dado por los siguientes pasos:
+\begin{enumerate}
+\item El verificador genera $s = \textit{Gen}(1^n)$ y un hash $x \in \{0,1\}^{\ell(n)}$
+\item El adversario elige $m \in \{0,1\}^*$ o $m = \bot$
+\item El adversario gana el juego si alguna de las siguientes condiciones se cumple:
+\begin{itemize}
+\item $m \in \{0,1\}^{*}$ y $h^s(m) = x$ 
+\item $m = \bot$ y  no existe $m' \in \{0,1\}^*$ tal que $h^s(m') = x$
+\end{itemize}
+En caso contrario, el adversario pierde.
+\end{enumerate}
+Además, decimos que $(\textit{Gen},h)$ es resistente a preimagen si
+para todo adversario que funciona como un algoritmo aleatorizado de
+tiempo polinomial, existe una función despreciable $f(n)$ tal que:
+\begin{eqnarray*}
+\Pr(\text{Adversario gane } \textit{Hash-Pre-Img}(n)) &\leq& f(n)
+\end{eqnarray*}
+Considerando estos conceptos, la pregunta se corrige de la siguiente forma:
+\begin{itemize}
+    \item{[1.5 puntos]} Solo se entrega una definición de resistencia a preimagen que es significativamente mas restringida que la anterior.
+    
+    \item{[3 puntos]} Solo se entrega una definición de resistencia a preimagen que es cercana a la anterior.
+    
+    \item{[4.5 puntos]} Se entrega una definición de resistencia a preimagen que es cercana a la anterior, y se da una idea de cómo se puede demostrar que resistencia a colisiones implica resistencia a preimagen.
+
+    \item{[6 puntos]} Se entrega una definición de resistencia a preimagen que es cercana a la anterior, y se demuestra formalmente que resistencia a colisiones implica resistencia a preimagen.
+\end{itemize}
+
+\medskip
