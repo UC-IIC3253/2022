@@ -62,8 +62,9 @@ Puede definir funciones adicionales antes de definir las clases. También puede 
 
 \paragraph{Detalles de implementación}
 \begin{itemize}
-  \item Para encriptar un mensaje lo separaremos en bloques de $n$ bytes, donde $n$ es el mayor múltiplo de 8 tal que $8\cdot n$ es menor que el número de bits de $N$. Por ejemplo, si para representar $N$ se necesitan 2056 bits, entonces $n$ será 256, dado que $256\cdot 8=2048$ y 2048 es el mayor múltiplo de 8 estrictamente menor que 2056.
-  \item La cantidad de bytes del mensaje no tiene por qué dividir al número $n$. En caso de que no lo divida simplemente utilizaremos un último bloque más corto. Si el mensaje tiene $\ell$ bytes entonces el último bloque tendrá $\ell\mod n$ bytes.
   \item Para pasar un mensaje a bytes necesitamos usar alguna codificación particular. Utilizaremos la codificación \href{https://en.wikipedia.org/wiki/UTF-8}{UTF-8}, lo que significa que para pasar un string \texttt{s} a un objeto de tipo \texttt{bytearray} podemos usar \texttt{bytearray(s, 'utf-8')}.
-  \item Para pasar un conjunto de bytes a un número utilizaremos \href{https://en.wikipedia.org/wiki/Endianness#Overview}{big-endian}, lo que significa que si \texttt{b} es un objeto de tipo \texttt{bytearray}, el número representado por \texttt{b} se puede obtener usando \texttt{int.from\_bytes(b, 'big')}.
+  \item Para encriptar el bytearray proviniente de un mensaje, lo separaremos en bloques de $n$ bytes, donde $n$ es el mayor múltiplo de 8 tal que $8\cdot n$ es menor que el número de bits de $N$. Por ejemplo, si para representar $N$ se necesitan 2056 bits, entonces $n$ será 256, dado que $256\cdot 8=2048$ y 2048 es el mayor múltiplo de 8 estrictamente menor que 2056.
+  \item Para encriptar un bloque $b$ (que es un bytearray de tamaño $n$), primero pasaremos dicho bytearray a un número $a$ usando \texttt{int.from\_bytes(b, 'big')}. Luego encriptaremos dicho número como $c=a^e\mod N$. Finalmente, guardaremos $c$ en un bytearray de largo $n+1$, dado que $c$ podría no caber en $n$ bytes.
+  \item La cantidad de bytes del mensaje no tiene por qué dividir al número $n$. En caso de que no lo divida simplemente utilizaremos un último bloque más corto. Si el mensaje tiene $\ell$ bytes entonces el último bloque tendrá $\ell\mod n$ bytes.
+  \item Supondremos que el byte 0 nunca vendrá codificado en el string de entrada, lo que resulta útil para decriptar el último bloque.
 \end{itemize}
