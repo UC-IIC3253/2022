@@ -1,6 +1,5 @@
 %!TEX root = ../main/main.tex
 
-Testing testing
 En esta pregunta deberá implementar la construcción de Merkle-Damgård
 de funciones de hash para mensajes de largo arbitrario, utilizando la
 construcción de Davies-Meyer para funciones de
@@ -56,7 +55,7 @@ bytes (128 bits).
 \begin{python}
 if __name__ == "__main__":
     compresion = davies_meyer(AES_128, 16, 16)
-    hash = merkle_damgard(b'0123456789012345', compresion, 16)
+    hash = merkle_damgard(bytearray(b'0123456789012345'), compresion, 16)
     s1 = bytearray(b'Este es un mensaje de prueba para la tarea 2')
     s2 = bytearray(b'Este es un segundo mensaje de prueba para la tarea 2')
     h1 = hash(s1)
