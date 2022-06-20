@@ -1,0 +1,42 @@
+%!TEX root = ../main/main.tex
+
+\section*{Instrucciones}
+
+Cualquier duda sobre la tarea se deberá hacer en los \emph{issues} del \href{https://github.com/UC-IIC3253/2022}{repositorio del curso}. Si quiere usar alguna librería en sus soluciones debe preguntar primero si dicha librería está permitida. El foro es el canal de comunicación oficial para todas las tareas.
+
+\paragraph{Entrega.} Para entregar esta tarea deberá usar el mismo repositorio que utilizó para entregar las tareas 1 y 2. Al entregar esta tarea, su repositorio se deberá ver exactamente de la siguiente forma:
+
+\bigskip
+
+\dirtree{%
+.1 \faGithub \ Repositorio.
+.2 \faFolderOpenO \ Tarea 1.
+.3 ....
+.2 \faFolderOpenO \ Tarea 2.
+.3 ....
+.2 \faFolderOpenO \ Tarea 3.
+.3 \faFolderOpenO \ Pregunta 1.
+.4 \faFileTextO \ \texttt{requirements.txt}.
+.4 \faFileCodeO \ \texttt{pregunta1.ipynb}.
+.2 \faFileTextO \ \texttt{.gitignore}.
+.2 \faFileTextO \ \texttt{README.md}.
+.2 \faFolderO \ .git.
+}
+
+\bigskip
+
+Deberá considerar lo siguiente:
+
+\begin{itemize}
+
+  \item El archivo \texttt{requirements.txt} dentro de la carpeta de una pregunta deberá especificar todas las librerías que se necesitan instalar para ejecutar el código de su respuesta a dicha pregunta. Este archivo debe seguir la especificación de \href{https://pypi.org/project/pip/}{Pip}, es decir se debe poder ejecutar el comando \texttt{pip install -r requirements.txt} suponiendo una versión de \texttt{Pip} mayor o igual a 20.0 que apunta a la versión 3.9 de Python. Si su respuesta no requiere librerías adicionales, este archivo debe estar vacío (pero debe estar en su repositorio).
+
+\item La solución de cada problema de programación debe ser entregada como un Jupyter Notebook (esto es, un archivo con extensión \texttt{ipynb}). Este archivo debe contener comentarios que expliquen claramente el razonamiento tras la solución del problema, idealmente utilizando \emph{markdown}. Más aun, su archivo deberá ser exportable a un módulo de Python utilizando el comando de consola
+\begin{verbatim}
+    jupyter nbconvert --to python preguntaX.ipynb
+\end{verbatim}
+Este comando generará un archivo \texttt{preguntaX.py}, del cual se deben poder importar las funciones y clases que se piden en cada pregunta. Por ejemplo, luego de ejecutar este comando, se debe poder importar desde otro archivo Python (ubicado en el mismo directorio) la clase \texttt{EllipticCurve} simplemente con \texttt{from pregunta1 import EllipticCurve}.
+
+%\item Para cada problema cuya solución se deba entregar como un documento (en este caso sólo la Pregunta 1), usted deberá entregar un archivo \texttt{.pdf} que, o bien fue construido utilizando \LaTeX, o bien es el resultado de digitalizar un documento escrito a mano. En caso de optar por esta última opción, queda bajo su responsabilidad la legibilidad del documento. Respuestas que no puedan interpretar de forma razonable los ayudantes y profesores, ya sea por la caligrafía o la calidad de la digitalización, serán evaluadas con la nota mínima.
+
+\end{itemize}
