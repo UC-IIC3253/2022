@@ -1,0 +1,9 @@
+%!TEX root = ../main/main.tex
+
+Suponga que encuentra en la calle un papel que en un lado tiene un par ordenado de números y en el otro dice literalmente ``El par ordenado al reverso representa un número que ha sido encriptado con ElGamal sobre $\mathbb{Z}_p^*$, donde $p$ vale 55340232221128654847''.
+
+¿Es la información disponible suficiente para decriptar el número original? De no ser así: ¿Qué información faltaría?
+
+\textbf{Solución:} La información disponible no es suficiente, dado que para decriptar un mensaje utilizando ElGamal se necesita conocer el valor secreto $x$ y el generador $g$.
+
+\textbf{Corrección:} Se considerará correcta una respuesta que mencione que para decriptar el número hacen falta los elementos mencionados arriba, o que mencione que hace falta la llave secreta (dado que la llave secreta, formalmente, contiene el secreto $x$ y el generador $g$).

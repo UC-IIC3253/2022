@@ -1,0 +1,20 @@
+%!TEX root = ../main/main.tex
+
+Un Message Authentication Code es una función para autentificar mensajes en base a una llave simétrica. Esta función toma una llave $k$ y un mensaje $m$ para generar un tag $t$. Intuitivamente, esperamos que una persona con la llave $k$ pueda verificar que el tag $t$ es válido para el mensaje $m$, y que alguien sin acceso a dicha llave no pueda autentificar mensajes que no se han autentificado antes. Para formalizar esta noción, en clases definimos un \emph{juego} que constaba de cinco pasos.
+\begin{enumerate}
+  \item El verificador genera una llave $k$ al azar.
+  \item El adversario envía un mensaje $m$ al verificador.
+  \item $\ldots$
+  \item Los pasos 2 y 3 se repiten tantas veces como quiera el adversario.
+  \item $\ldots$
+\end{enumerate}
+Escriba los dos pasos faltantes, y luego explique cuándo decimos que el adversario gana el juego.
+
+\textbf{Solución:} Los pasos faltantes son:
+\begin{itemize}
+\item[(c)] El verificador responde con el tag $t$ generado con la llave $k$ y el mensaje $m$.
+\item[(e)] El adversario envía un mensaje $m_0$ junto a un tag $t_0$, tal que $m_0$ es distinto de todos los mensajes enviados en el paso (b).
+\end{itemize}
+El adversario gana cuando $t_0$ es un tag válido para el mensaje $m_0$ dada la llave $k$.
+
+\textbf{Corrección:} Se considerará correcta una respuesta que sea equivalente a lo anterior. En particular, la condición de que $m_0$ sea distinto a todos los mensajes enviados anteriormente podría considerarse como parte de lo necesario para que el adversario gane el juego.

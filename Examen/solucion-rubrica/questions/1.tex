@@ -1,0 +1,10 @@
+%!TEX root = ../main/main.tex
+Sea $H$ una función de hash criptográfica (resistente a colisiones y pre-imágenes). Una de las siguientes aseveraciones es falsa. Indique cuál es y explique por qué es falsa.
+\begin{enumerate}
+  \item La función $f(x):=H(x\ ||\ x)$ no es resistente a colisiones.
+  \item La función $H(x\ ||\ H(x))$ es también una función de hash criptográfica.
+\end{enumerate}
+
+\textbf{Solución:} La afirmación falsa es la (a), puesto que una colisión para $f$ implica una colisión para $H$. Luego un algoritmo eficiente para encontrar colisiones en $f$ es también un algoritmo eficiente para encontrar colisiones en $H$.
+
+\textbf{Corrección:} Se considerará buena una respuesta que de a entender que encontrar colisiones para $f$ implica encontrar colisiones para $H$.

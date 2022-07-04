@@ -1,0 +1,24 @@
+%!TEX root = ../main/main.tex
+
+Ciertos documentos son aceptados por instituciones cuando están verificados por un notario y el notario asegura que el documento se puede utilizar en dicha entidad. A modo de ejemplo, la Universidad Católica aceptará una fotocopia de un título profesional siempre que un notario firme un mensaje que diga ``Esta fotocopia de su título es válida, y se puede utilizar en la Universidad Católica''.
+
+Suponga que se quiere digitalizar lo explicado arriba bajo los siguientes supuestos:
+\begin{itemize}
+  \item Existe un solo notario que tiene una llave secreta y una llave pública.
+  \item Todo el mundo conoce la llave pública del notario.
+  \item Cada entidad $E$ tiene un string identificador $\text{ID}_E$ conocido por todos. Todos estos identificadores tienen el mismo largo.
+\end{itemize}
+
+Ahora, cuando una entidad $E$ pida a un cliente un documento firmado y autorizado por el notario, se usará el siguiente protocolo.
+
+\begin{enumerate}
+  \item El cliente genera el documento $d$ y encripta $\text{ID}_E || d$ con la llave pública del notario (suponemos que el documento es también un string). El texto cifrado resultante, que llamaremos $c$, es enviado al notario.
+  \item El notario verifica que el documento es válido y se puede utilizar en la entidad correspondiente. De no ser así se termina el protocolo.
+  \item El notario genera una firma $f$ para $c$ con su llave privada y le envía $f$ al cliente.
+  \item Finalmente, el cliente envía $(c,f)$ a la entidad $E$.
+\end{enumerate}
+
+Para tener esta pregunta correcta deberá responder correctamente a las siguientes tres preguntas:
+%%%%% , utilizando no más de dos líneas en cada respuesta:
+(1) ¿Por qué el protocolo no satisface lo esperado? (2) ¿Cómo podemos modificar el último paso para arreglarlo? (3) ¿Qué complejidad innecesaria tiene el protocolo?
+

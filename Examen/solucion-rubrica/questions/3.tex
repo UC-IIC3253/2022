@@ -1,0 +1,7 @@
+%!TEX root = ../main/main.tex
+
+Suponga que necesita tener una base de datos con información que permita autentificar usuarios en base a un password que los mismos usuarios proveen (como suele ocurrir en la Web). Explique por qué \textbf{no} sería una buena idea almacenar pares $(e,H(p))$, donde $e$ es el correo del usuario, $H$ es una función de hash criptográfica y $p$ es el password del usuario. \textit{Hint: Comience su respuesta con ``Si se filtra la base de datos [$\ldots$]''}
+
+\textbf{Solución:} Si se filtra la base de datos, un atacante podría comparar los valores de hash en la base de datos con un conjunto de valores de hash pre-calculados (es decir, utilizar una \emph{rainbow table}).
+
+\textbf{Corrección:} Se considerará correcta una respuesta que de a entender que el sistema se puede atacar teniendo valores de hash pre-calculados para ciertas contraseñas.
